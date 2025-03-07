@@ -1,15 +1,15 @@
 <?php
 
 arch()
-    ->expect('Moox\Skeleton')
+    ->expect('Moox\Media')
     ->toUseStrictTypes()
     ->not->toUse(['die', 'dd', 'dump']);
 
 arch()
-    ->expect('Moox\Skeleton\Models')
+    ->expect('Moox\Media\Models')
     ->toBeClasses()
     ->toExtend('Illuminate\Database\Eloquent\Model')
-    ->toOnlyBeUsedIn('Moox\Skeleton');
+    ->toOnlyBeUsedIn('Moox\Media');
 
 arch()->preset()->php();
 arch()->preset()->security()->ignoring('md5');

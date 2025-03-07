@@ -1,27 +1,23 @@
-![Moox Skeleton](https://github.com/mooxphp/moox/raw/main/art/banner/skeleton-package.jpg)
+![Moox Media](https://github.com/mooxphp/moox/raw/main/art/banner/media-package.jpg)
 
-# Moox Skeleton
+# Moox Media
 
-<!--shortdesc-->
-
-This template is used for generating Moox packages. Press the Template-Button in GitHub, create your own Laravel and Filament package.
-
-<!--/shortdesc-->
+This is my package media
 
 ## Quick Installation
 
 These two commmands are all you need to install the package:
 
 ```bash
-composer require moox/skeleton
-php artisan skeleton:install
+composer require moox/media
+php artisan media:install
 ```
 
 Curious what the install command does? See manual installation below.
 
 ## Using the Template
 
-1. Go to https://github.com/mooxphp/skeleton
+1. Go to https://github.com/mooxphp/media
 2. Press the `Use this template` button
 3. Create a new repository based on the template
 4. Clone the repository locally
@@ -187,15 +183,15 @@ or Moox Press User instead:
 
 ## Manual Installation
 
-Instead of using the install-command `php artisan skeleton:install` you are able to install this package manually step by step:
+Instead of using the install-command `php artisan media:install` you are able to install this package manually step by step:
 
 ```bash
 // Publish and run the migrations:
-php artisan vendor:publish --tag="skeleton-migrations"
+php artisan vendor:publish --tag="media-migrations"
 php artisan migrate
 
 // Publish the config file with:
-php artisan vendor:publish --tag="skeleton-config"
+php artisan vendor:publish --tag="media-config"
 ```
 
 ## Changelog

@@ -1,6 +1,6 @@
 {
-    "name": "moox/skeleton",
-    "description": "This template is used for generating all Moox packages.",
+    "name": "moox/media",
+    "description": "This is my package media",
     "keywords": [
         "Laravel",
         "Filament",
@@ -21,14 +21,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Moox\\Skeleton\\": "src",
-            "Moox\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Moox\\Media\\": "src",
+            "Moox\\Media\\Database\\Factories\\": "database/factories"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Moox\\Skeleton\\SkeletonServiceProvider"
+                "Moox\\Media\\MediaServiceProvider"
             ]
         }
     },
@@ -43,8 +43,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Moox\\Skeleton\\Tests\\": "tests",
-            "Moox\\Skeleton\\Database\\Factories\\": "database/factories",
+            "Moox\\Media\\Tests\\": "tests",
+            "Moox\\Media\\Database\\Factories\\": "database/factories",
             "Workbench\\App\\": "workbench/app/",
             "Workbench\\Database\\Factories\\": "workbench/database/factories/",
             "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
@@ -55,7 +55,7 @@
             "@clear",
             "@prepare"
         ],
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-media --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": "@php vendor/bin/testbench workbench:build --ansi",
         "serve": [
