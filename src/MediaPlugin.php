@@ -6,7 +6,6 @@ use Filament\Panel;
 use Filament\Contracts\Plugin;
 use Moox\Media\Resources\MediaResource;
 use Filament\Support\Concerns\EvaluatesClosures;
-use Moox\Media\Resources\MediaCollectionResource;
 
 class MediaPlugin implements Plugin
 {
