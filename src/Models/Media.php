@@ -28,6 +28,7 @@ class Media extends BaseMedia implements HasMedia, TranslatableContract
         'model_id',
         'model_type',
         'collection_name',
+        'media_collection_id',
         'original_model_id',
         'original_model_type',
         'write_protected',
@@ -47,7 +48,7 @@ class Media extends BaseMedia implements HasMedia, TranslatableContract
 
     public function collection()
     {
-        return $this->belongsTo(MediaCollection::class, 'collection_name', 'name');
+        return $this->belongsTo(MediaCollection::class, 'media_collection_id');
     }
 
     public function registerMediaConversions(?BaseMedia $media = null): void
@@ -127,6 +128,13 @@ class Media extends BaseMedia implements HasMedia, TranslatableContract
                 }
 
                 $model->save();
+            }
+        });
+
+        static::saving(function ($media) {
+            if ($media->media_collection_id) {
+                $collection = MediaCollection::find($media->media_collection_id);
+                $media->collection_name = $collection?->name ?? null;
             }
         });
     }

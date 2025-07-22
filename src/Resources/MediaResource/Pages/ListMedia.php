@@ -18,6 +18,8 @@ class ListMedia extends ListRecords
 
     protected array $processedFiles = [];
 
+    public array $processedHashes = [];
+
     public bool $isSelecting = false;
 
     public array $selected = [];
@@ -55,22 +57,13 @@ class ListMedia extends ListRecords
                 ->label(__('media::fields.upload_file'))
                 ->icon(config('media.upload.resource.icon'))
                 ->schema([
-                    Select::make('collection_name')
+                    Select::make('media_collection_id')
                         ->label(__('media::fields.collection'))
-                        ->options(function () {
-                            return MediaCollection::query()
-                                ->pluck('name', 'name')
-                                ->toArray();
-                        })
+                        ->options(fn () => MediaCollection::whereHas('translations', function ($query) {
+                            $query->where('locale', app()->getLocale());
+                        })->get()->pluck('name', 'id')->filter()->toArray())
+                        ->default(MediaCollection::first()->id)
                         ->searchable()
-                        ->default(function () {
-                            $collection = MediaCollection::firstOrCreate(
-                                ['name' => __('media::fields.uncategorized')],
-                                ['description' => __('media::fields.uncategorized_description')]
-                            );
-
-                            return $collection->name;
-                        })
                         ->required()
                         ->live(),
                     FileUpload::make('file')
@@ -105,7 +98,9 @@ class ListMedia extends ListRecords
                                 return;
                             }
 
-                            $collectionName = $get('collection_name') ?? __('media::fields.uncategorized');
+                            $collectionId = $get('media_collection_id');
+                            $collection = MediaCollection::find($collectionId);
+                            $collectionName = $collection?->name ?? __('media::fields.uncategorized');
 
                             foreach ($state as $tempFile) {
                                 $fileHash = hash_file('sha256', $tempFile->getRealPath());
@@ -141,10 +136,13 @@ class ListMedia extends ListRecords
                                 $fileAdder = app(FileAdderFactory::class)->create($model, $tempFile);
                                 $media = $fileAdder->preservingOriginal()->toMediaCollection($collectionName);
 
+                                $media->media_collection_id = $collectionId;
+                                $media->save();
+
                                 $title = pathinfo($tempFile->getClientOriginalName(), PATHINFO_FILENAME);
 
-                                $media->setAttribute('title', $title);
-                                $media->setAttribute('alt', $title);
+                                $media->title = $title;
+                                $media->alt = $title;
                                 $media->uploader_type = get_class(auth()->user());
                                 $media->uploader_id = auth()->id();
                                 $media->original_model_type = Media::class;

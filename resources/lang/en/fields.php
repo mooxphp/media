@@ -82,7 +82,7 @@ return [
     'month' => 'This Month',
     'year' => 'This Year',
 
-    // Collection Filters
+    // Collections
     'all_collections' => 'All Collections',
     'collection_name' => 'Collection Name',
     'collection_description' => 'Collection Description',
@@ -94,6 +94,8 @@ return [
     'delete_collection_with_media_warning' => 'This collection contains :count :files. These files will be moved to the collection ":uncategorized".',
     'uncategorized' => 'Not Assigned',
     'uncategorized_description' => 'Not Assigned Media',
+    'extend_existing_collection' => 'Translate Existing Collection',
+    'create_new_collection' => 'New Collection',
 
     // Media Types
     'uploaded' => 'Uploaded',
@@ -104,6 +106,7 @@ return [
 
     // Errors
     'class_not_found' => 'The class ":class" does not exist.',
+    'collection_name_already_exists' => 'A collection with this name already exists.',
 
     // Media Picker
     'upload_and_select_media' => 'Upload & Select Media',

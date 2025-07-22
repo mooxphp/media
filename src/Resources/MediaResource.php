@@ -333,18 +333,18 @@ class MediaResource extends Resource
                                     ]);
                                 }),
 
-                            Select::make('collection_name')
+                            Select::make('media_collection_id')
                                 ->label(__('media::fields.collection'))
                                 ->disabled(fn ($record) => $record?->getOriginal('write_protected'))
-                                // ->options(function () {
-                                //     return MediaCollection::query()
-                                //         ->pluck('name', 'name')
-                                //         ->toArray();
-                                // })
-                                ->default(fn ($record) => $record->collection_name)
+                                ->options(
+                                    MediaCollection::whereHas('translations', function ($query) {
+                                        $query->where('locale', app()->getLocale());
+                                    })->get()->pluck('name', 'id')->filter()->toArray()
+                                )
+                                ->default(fn ($record) => $record->media_collection_id)
                                 ->afterStateUpdated(function ($state, $record) {
-                                    if ($state !== $record->collection_name) {
-                                        $record->collection_name = $state;
+                                    if ($state !== $record->media_collection_id) {
+                                        $record->media_collection_id = $state;
                                         $record->save();
                                     }
                                 }),
@@ -505,7 +505,7 @@ class MediaResource extends Resource
                 ->label(__('media::fields.name'))
                 ->searchable();
 
-            $columns[] = TextColumn::make('collection_name')
+            $columns[] = TextColumn::make('collection.name')
                 ->label(__('media::fields.collection'))
                 ->searchable();
 
@@ -841,6 +841,7 @@ class MediaResource extends Resource
                             }),
                     ]),
             ])
+            ->deferFilters(false)
             ->filters([
                 SelectFilter::make('mime_type')
                     ->label(__('media::fields.mime_type'))
