@@ -41,10 +41,6 @@ class MediaServiceProvider extends PackageServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'media');
         Livewire::component('media-picker-modal', MediaPickerModal::class);
 
-        $this->publishes([
-            __DIR__.'/../resources/dist/icons' => public_path('vendor/media/icons'),
-        ], 'media-icons');
-
         FilamentView::registerRenderHook(
             TablesRenderHook::TOOLBAR_SEARCH_BEFORE,
             fn (): string => Blade::render('@include("localization::lang-selector")'),

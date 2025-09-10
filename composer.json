@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "moox/core": "3.1.125",
+        "moox/core": "4.0.0",
         "filament/spatie-laravel-media-library-plugin": "^4.0",
         "moox/localization": "*",
         "moox/data": "*"
@@ -34,7 +34,6 @@
             ]
         }
     },
-    "minimum-stability": "stable",
     "prefer-stable": true,
     "require-dev": {
         "moox/devtools": "self.version"

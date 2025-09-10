@@ -4,7 +4,6 @@ namespace Moox\Media\Resources;
 
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -512,7 +511,23 @@ class MediaResource extends Resource
                             'x-on:click' => '$wire.call("mountAction", "edit", { record: '.$record->id.' })',
                         ];
                     })
-                    ->tooltip(fn ($record) => $record->title ?? __('media::fields.no_title'))
+                    ->tooltip(function ($record, $livewire) {
+                        $currentLang = $livewire->lang;
+
+                        if (method_exists($record, 'translations')) {
+                            $translation = $record->translations()
+                                ->where('locale', $currentLang)
+                                ->whereNotNull('title')
+                                ->where('title', '!=', '')
+                                ->first();
+
+                            if ($translation) {
+                                return $translation->title;
+                            }
+                        }
+
+                        return pathinfo($record->file_name, PATHINFO_FILENAME);
+                    })
                     ->searchable(true, function (Builder $query, string $search) {
                         $query->whereHas('translations', function (Builder $query) use ($search) {
                             $query->where('locale', app()->getLocale())
@@ -564,7 +579,23 @@ class MediaResource extends Resource
                         'x-on:click' => '$wire.call("mountAction", "edit", { record: '.$record->id.' })',
                     ];
                 })
-                ->tooltip(fn ($record) => $record->title ?? __('media::fields.no_title'))
+                ->tooltip(function ($record, $livewire) {
+                    $currentLang = $livewire->lang;
+
+                    if (method_exists($record, 'translations')) {
+                        $translation = $record->translations()
+                            ->where('locale', $currentLang)
+                            ->whereNotNull('title')
+                            ->where('title', '!=', '')
+                            ->first();
+
+                        if ($translation) {
+                            return $translation->title;
+                        }
+                    }
+
+                    return pathinfo($record->file_name, PATHINFO_FILENAME);
+                })
                 ->searchable(true, function (Builder $query, string $search) {
                     $query->whereHas('translations', function (Builder $query) use ($search) {
                         $query->where('locale', app()->getLocale())
@@ -856,7 +887,7 @@ class MediaResource extends Resource
                             ->action(function ($record, $livewire) {
                                 $livewire->saveTranslationFromForm($record->id);
                             }),
-                        DeleteAction::make()
+                        Action::make('delete')
                             ->label(__('media::fields.delete_file'))
                             ->color('danger')
                             ->icon('heroicon-m-trash')
