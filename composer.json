@@ -18,11 +18,11 @@
         }
     ],
     "require": {
-        "moox/core": "5.0.0",
+        "moox/core": "5.0.1",
         "filament/spatie-laravel-media-library-plugin": "^5.0",
-        "moox/localization": "5.0.0",
-        "moox/data": "5.0.0",
-        "moox/file-icons": "5.0.0"
+        "moox/localization": "5.0.1",
+        "moox/data": "5.0.1",
+        "moox/file-icons": "5.0.1"
     },
     "autoload": {
         "psr-4": {
