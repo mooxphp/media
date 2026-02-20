@@ -7,7 +7,7 @@ use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Moox\Media\Models\MediaCollection;
+use Moox\Localization\Models\Localization;
 use Moox\Media\Resources\MediaCollectionResource;
 
 class ListMediaCollections extends ListRecords
@@ -23,8 +23,33 @@ class ListMediaCollections extends ListRecords
     public function mount(): void
     {
         parent::mount();
-        $this->lang = request()->get('lang', app()->getLocale());
-        MediaCollection::ensureUncategorizedExists();
+        $this->lang = request()->get('lang', $this->getDefaultLocale());
+
+        app()->setLocale($this->lang);
+    }
+
+    protected function getDefaultLocale(): string
+    {
+        if (class_exists(Localization::class)) {
+            $defaultLocale = Localization::query()
+                ->where('is_default', true)
+                ->where('is_active_admin', true)
+                ->first();
+
+            if ($defaultLocale) {
+                return $defaultLocale->getAttribute('locale_variant') ?: $defaultLocale->language->alpha2;
+            }
+
+            $firstActiveLocale = Localization::query()
+                ->where('is_active_admin', true)
+                ->first();
+
+            if ($firstActiveLocale) {
+                return $firstActiveLocale->getAttribute('locale_variant') ?: $firstActiveLocale->language->alpha2;
+            }
+        }
+
+        return app()->getLocale();
     }
 
     protected function getHeaderActions(): array
